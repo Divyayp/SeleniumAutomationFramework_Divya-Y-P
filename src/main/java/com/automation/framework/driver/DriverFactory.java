@@ -2,7 +2,10 @@ package com.automation.framework.driver;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DriverFactory {
 
@@ -17,8 +20,15 @@ public class DriverFactory {
             if(browser.equalsIgnoreCase("chrome")) {
 
                 System.out.println("Setting up ChromeDriver");
-
-                driver.set(new ChromeDriver());
+                
+                WebDriverManager.chromedriver().setup();
+                
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--headless");
+                
+                driver.set(new ChromeDriver(options));
 
                 System.out.println("Chrome launched successfully");
 
@@ -27,13 +37,14 @@ public class DriverFactory {
             else if(browser.equalsIgnoreCase("edge")) {
 
                 System.out.println("Setting up EdgeDriver");
+                
+                WebDriverManager.edgedriver().setup();
+                
+                EdgeOptions options = new EdgeOptions();
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
 
-                System.setProperty(
-                    "webdriver.edge.driver",
-                    "C:\\Users\\Divya\\Downloads\\edgedriver_win64 (2)\\msedgedriver.exe"
-                );
-
-                driver.set(new EdgeDriver());
+                driver.set(new EdgeDriver(options));
 
                 System.out.println("Edge launched successfully");
 
