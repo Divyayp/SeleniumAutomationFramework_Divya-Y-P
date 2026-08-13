@@ -118,6 +118,9 @@ public class EmailUtil {
         int passed = 0;
         int failed = 0;
         int skipped = 0;
+        
+        long suiteStartTime = Long.MAX_VALUE;
+        long suiteEndTime = 0;
 
         StringBuilder testDetails = new StringBuilder();
 
@@ -140,6 +143,14 @@ public class EmailUtil {
                 total++;
                 passed++;
 
+                // Track suite start and end time
+                if (result.getStartMillis() < suiteStartTime) {
+                    suiteStartTime = result.getStartMillis();
+                }
+                if (result.getEndMillis() > suiteEndTime) {
+                    suiteEndTime = result.getEndMillis();
+                }
+
                 appendTestResult(testDetails, result, "PASS");
             }
 
@@ -153,6 +164,14 @@ public class EmailUtil {
 
                 total++;
                 failed++;
+
+                // Track suite start and end time
+                if (result.getStartMillis() < suiteStartTime) {
+                    suiteStartTime = result.getStartMillis();
+                }
+                if (result.getEndMillis() > suiteEndTime) {
+                    suiteEndTime = result.getEndMillis();
+                }
 
                 appendTestResult(testDetails, result, "FAIL");
             }
@@ -168,6 +187,14 @@ public class EmailUtil {
                 total++;
                 skipped++;
 
+                // Track suite start and end time
+                if (result.getStartMillis() < suiteStartTime) {
+                    suiteStartTime = result.getStartMillis();
+                }
+                if (result.getEndMillis() > suiteEndTime) {
+                    suiteEndTime = result.getEndMillis();
+                }
+
                 appendTestResult(testDetails, result, "SKIPPED");
             }
         }
@@ -177,6 +204,14 @@ public class EmailUtil {
                         .format(new Date());
 
         String suiteName = suite.getName();
+
+        // Calculate total execution time
+        long totalExecutionTime = 0;
+        if (suiteStartTime != Long.MAX_VALUE && suiteEndTime > 0) {
+            totalExecutionTime = suiteEndTime - suiteStartTime;
+        }
+        
+        String totalExecutionTimeText = formatDuration(totalExecutionTime);
 
         StringBuilder html = new StringBuilder();
 
@@ -233,6 +268,13 @@ public class EmailUtil {
                 createSummaryRow(
                         "Suite Name",
                         suiteName
+                )
+        );
+
+        html.append(
+                createSummaryRow(
+                        "Total Execution Time",
+                        totalExecutionTimeText
                 )
         );
 
@@ -350,6 +392,7 @@ public class EmailUtil {
 
         /*
          * Get browser from TestNG parameter.
+         * Try multiple ways to get the browser parameter
          */
         String browser = "-";
 
@@ -366,7 +409,21 @@ public class EmailUtil {
 
         } catch (Exception e) {
 
-            browser = "-";
+            // If above fails, try getting from suite parameters
+            try {
+                
+                browser = result
+                        .getTestContext()
+                        .getSuite()
+                        .getParameter("browser");
+
+                if (browser == null || browser.trim().isEmpty()) {
+                    browser = "-";
+                }
+
+            } catch (Exception ex) {
+                browser = "-";
+            }
         }
 
         /*
