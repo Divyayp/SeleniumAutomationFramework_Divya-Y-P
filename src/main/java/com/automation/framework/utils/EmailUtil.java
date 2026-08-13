@@ -1,5 +1,6 @@
 package com.automation.framework.utils;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -7,11 +8,14 @@ import java.util.Properties;
 
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
+import jakarta.mail.Multipart;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 
 import org.testng.ISuite;
 import org.testng.ITestResult;
@@ -66,17 +70,39 @@ public class EmailUtil {
 
             String emailBody = buildEmailBody(suite);
 
-            // Important:
-            // setContent() is used instead of setText()
-            // because we are sending an HTML table.
-            message.setContent(
+            // Create multipart message for email body + attachment
+            Multipart multipart = new MimeMultipart();
+
+            // Add email body
+            MimeBodyPart bodyPart = new MimeBodyPart();
+            bodyPart.setContent(
                     emailBody,
                     "text/html; charset=UTF-8"
             );
+            multipart.addBodyPart(bodyPart);
+
+            // Add PDF attachment
+            String pdfPath = "test-output/custom-report/Automation-Test-Execution-Report.pdf";
+            File pdfFile = new File(pdfPath);
+
+            if (pdfFile.exists()) {
+
+                MimeBodyPart attachmentPart = new MimeBodyPart();
+                attachmentPart.attachFile(pdfFile);
+                multipart.addBodyPart(attachmentPart);
+
+                System.out.println("PDF attachment added to email");
+
+            } else {
+
+                System.out.println("PDF file not found at: " + pdfPath);
+            }
+
+            message.setContent(multipart);
 
             Transport.send(message);
 
-            System.out.println("Email sent successfully.");
+            System.out.println("Email sent successfully with attachment.");
 
         } catch (Exception e) {
 
