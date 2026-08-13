@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Automation Test Execution Report</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
+
+    <div class="header">
+
+        <div class="header-title">
+
+            <h1>
+                Automation Test Execution Report
+            </h1>
+
+            <p>
+                Automation Test Execution Summary
+            </p>
+
+        </div>
+
+
+        <div class="header-details">
+
+            <div>
+
+                <span class="detail-label">
+                    Execution Date
+                </span>
+
+                <span class="detail-value">
+                    {{EXECUTION_DATE}}
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <span class="detail-label">
+                    Environment
+                </span>
+
+                <span class="detail-value">
+                    {{ENVIRONMENT}}
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <span class="detail-label">
+                    Tester
+                </span>
+
+                <span class="detail-value">
+                    {{TESTER}}
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <span class="detail-label">
+                    Browsers
+                </span>
+
+                <span class="detail-value">
+                    {{BROWSERS}}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         SUMMARY
+         ========================================================= -->
+
+    <div class="summary">
+
+
+        <div class="summary-card total-card">
+
+            <div class="summary-number">
+                {{TOTAL_TESTS}}
+            </div>
+
+            <div class="summary-label">
+                Total Tests
+            </div>
+
+        </div>
+
+
+        <div class="summary-card passed-card">
+
+            <div class="summary-number">
+                {{PASSED_TESTS}}
+            </div>
+
+            <div class="summary-label">
+                Passed
+            </div>
+
+        </div>
+
+
+        <div class="summary-card failed-card">
+
+            <div class="summary-number">
+                {{FAILED_TESTS}}
+            </div>
+
+            <div class="summary-label">
+                Failed
+            </div>
+
+        </div>
+
+
+        <div class="summary-card skipped-card">
+
+            <div class="summary-number">
+                {{SKIPPED_TESTS}}
+            </div>
+
+            <div class="summary-label">
+                Skipped
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         TEST EXECUTION DETAILS
+         ========================================================= -->
+
+    <div class="report-section">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Test Execution Details
+                </h2>
+
+                <p>
+                    Detailed result of each executed test case
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            TC ID
+                        </th>
+
+                        <th>
+                            Test Case
+                        </th>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Browser
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Duration
+                        </th>
+
+                        <th>
+                            Screenshot
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {{TEST_RESULTS}}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         SCREENSHOT POPUP
+         ========================================================= -->
+
+    <div id="screenshotPopup"
+         class="popup">
+
+
+        <div class="popup-content">
+
+
+            <!-- POPUP HEADER -->
+
+            <div class="popup-header">
+
+                <span>
+                    Test Execution Screenshot
+                </span>
+
+
+                <button type="button"
+                        class="close"
+                        onclick="closeScreenshot()">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <!-- POPUP IMAGE -->
+
+            <div class="popup-body">
+
+                <img id="screenshotImage"
+                     src=""
+                     alt="Test Execution Screenshot" />
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
+    <div class="footer">
+
+        <p>
+            Automation Framework Report
+        </p>
+
+    </div>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+         ========================================================= -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
