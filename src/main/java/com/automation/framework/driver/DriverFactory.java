@@ -21,7 +21,7 @@ public class DriverFactory {
 
                 System.out.println("Setting up ChromeDriver");
                 
-                WebDriverManager.chromedriver().setup();
+                WebDriverManager.chromedriver().clearDriverCache().setup();
                 
                 ChromeOptions options = new ChromeOptions();
                 options.addArguments("--no-sandbox");
@@ -38,11 +38,12 @@ public class DriverFactory {
 
                 System.out.println("Setting up EdgeDriver");
                 
-                WebDriverManager.edgedriver().setup();
+                WebDriverManager.edgedriver().clearDriverCache().setup();
                 
                 EdgeOptions options = new EdgeOptions();
                 options.addArguments("--no-sandbox");
                 options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--headless");
 
                 driver.set(new EdgeDriver(options));
 
